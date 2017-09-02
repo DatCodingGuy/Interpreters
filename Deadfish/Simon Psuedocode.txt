@@ -1,0 +1,150 @@
+//Define variables
+define SoundList as List of Integers
+define GameMode as Integer
+define HighScore as Integer
+define ButtonClicked as Integer
+
+define RedNotClicked as Image
+define RedClicked as Image
+define GreenNotClicked as Image
+define GreenClicked as Image
+define YelowNotClicked as Image
+define YellowClicked as Image
+define BlueNotClicked as Image
+define BlueClicked as Image
+
+define RedSound as Sound
+define GreenSound as Sound
+define YellowSound as Sound
+define BlueSound as Sound
+define GameEndSound as Sound
+
+//Entry point
+func Main()
+    call NewGame()
+    
+    while
+        if GameMode equals 0
+            call PlaySounds()
+        else if GameMode equals 1
+            call GetInput()
+            call GenerateNextSound()
+        end if
+    end while
+end func
+
+//This resets the variables and starts a new game
+func NewGame
+    call SoundList.Clear()
+    call GenerateNextSound()
+    GameMode equals 0
+    load HighScore from local storage
+    set ButtonClicked to 0
+end func
+
+//Generates the next sound in the pattern and adds it to the list
+func GenerateNextSound()
+    define NextSound as Integer
+    set NextSound to a random Integer between, but not including, 0 and 5
+    call SoundList.Add(NextSound)
+end func
+
+//Plays all the sounds in the pattern and lights up the appropriate buttons
+func PlaySounds()
+    foreach s in SoundList
+        if s equals 1
+            set RedButton.Image to RedClicked
+            play RedSound
+            wait 0.5 seconds
+            set RedButton.Image to RedNotClicked
+        if s equals 2
+            set GreenButton.Image to GreenClicked
+            play GreenSound
+            wait 0.5 seconds
+            set GreenButton.Image to GreenNotClicked
+        if s equals 3
+            set YellowButton.Image to YellowClicked
+            play YellowSound
+            wait 0.5 seconds
+            set YellowButton.Image to YellowNotClicked
+        if s equals 4
+            set BlueButton.Image to BlueClicked
+            play BlueSound
+            wait 0.5 seconds
+            set BlueButton.Image to BlueNotClicked
+        end if
+        
+        wait 1 second
+    end foreach
+    
+    set GameMode to 1
+end func
+
+//Get user input and check if it's correct
+func GetInput()
+    foreach SoundIndex in SoundList
+        set GameMode to 1
+        
+        while ButtonClicked equals 0
+        end while
+        
+        if ButtonClicked does not equal Sound
+            call GameEnd()
+        end if
+        
+        buttonClicked equals 0
+end func
+
+//This plays an end of game sound and then checks and sets the highscore
+func GameEnd()
+    if SoundList.Count() - 1 is bigger than HighScore
+        HighScore equals SoundList.Count() - 1
+        save HighScore to local storage
+        wait 2 seconds
+        call NewGame()
+    end if
+end func
+
+//This executes when the red button is clicked
+event RedButton.Clicked()
+    if GameMode quals 1 and ButtonClicked equals 0
+        ButtonClicked equals 1
+        set Redbutton.Image to RedClicked
+        play RedSound
+        wait 0.5 seconds
+        set RedButton.Image to RedNotClicked
+    end if
+end event
+
+//This executes when the green button is clicked
+event GreenButton.Clicked()
+    if GameMode quals 1 and ButtonClicked equals 0
+        ButtonClicked equals 1
+        set Greenbutton.Image to GreenClicked
+        play GreenSound
+        wait 0.5 seconds
+        set GreenButton.Image to GreenNotClicked
+    end if
+end event
+
+//This executes when the yellow button is clicked
+event YellowButton.Clicked()
+    if GameMode quals 1 and ButtonClicked equals 0
+        ButtonClicked equals 1
+        set Yellowbutton.Image to YellowClicked
+        play YellowSound
+        wait 0.5 seconds
+        set YellowButton.Image to YellowNotClicked
+    end if
+end event
+
+//This executes when the blue button is clicked
+event BlueButton.Clicked()
+    if GameMode quals 1 and ButtonClicked equals 0
+        ButtonClicked equals 1
+        set Bluebutton.Image to BlueClicked
+        play BlueSound
+        wait 0.5 seconds
+        set BlueButton.Image to BlueNotClicked
+    end if
+end event

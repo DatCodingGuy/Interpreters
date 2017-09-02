@@ -1,0 +1,5 @@
+V (Readkey)
+@ (Print out key as char)
+V (Readkey)
+% (Print out key as int)
+1##0$$0# (Infinite Loop)
